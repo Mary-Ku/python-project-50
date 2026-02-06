@@ -1,0 +1,25 @@
+[project]
+name = "hexlet-code"
+authors = [
+    {name = "Mary-Ku", email="maryku4815@gmail.com"}
+]
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gendiff"]
+
+[project.scripts]
+gendiff = "gendiff.scripts.gendiff:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.0",
+]
