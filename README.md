@@ -13,4 +13,5 @@ Compares two configuration files and shows a difference.
 
 ```bash
 gendiff file1.json file2.json
+gendiff file1.yml file2.yaml
 ```
