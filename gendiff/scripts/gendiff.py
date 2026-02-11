@@ -1,6 +1,7 @@
 """Модуль содержит точку входа gendiff."""
 
 import argparse
+from gendiff import generate_diff
 
 
 def main():
@@ -16,9 +17,12 @@ def main():
         default='stylish',
         help='set format of output'
     )
-    parser.parse_args()
+    args = parser.parse_args()
+
+    # Пока поддерживаем только stylish
+    diff = generate_diff(args.first_file, args.second_file)
+    print(diff)
 
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
