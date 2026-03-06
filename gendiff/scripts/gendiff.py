@@ -3,7 +3,7 @@
 import argparse
 
 
-def main():
+def main() -> None:
     """Точка входа утилиты gendiff."""
     parser = argparse.ArgumentParser(
         usage='gendiff [-h] first_file second_file',
@@ -14,5 +14,5 @@ def main():
     parser.print_help()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
