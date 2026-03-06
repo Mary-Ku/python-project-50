@@ -1,6 +1,4 @@
-# gendiff/__init__.py
-
-from .parsers import parse_file
+from gendiff.parsers import parse_file
 
 
 def _format_value(value):
@@ -12,6 +10,7 @@ def _format_value(value):
 
 
 def generate_diff(filepath1: str, filepath2: str) -> str:
+    """Сравнивает файлы и возвращает их отличия."""
     data1 = parse_file(filepath1)
     data2 = parse_file(filepath2)
 
@@ -20,13 +19,13 @@ def generate_diff(filepath1: str, filepath2: str) -> str:
 
     for key in all_keys:
         if key not in data2:
-            diff_lines.append(f"  - {key}: {_format_value(data1[key])}")
+            diff_lines.append(f'  - {key}: {_format_value(data1[key])}')
         elif key not in data1:
-            diff_lines.append(f"  + {key}: {_format_value(data2[key])}")
+            diff_lines.append(f'  + {key}: {_format_value(data2[key])}')
         elif data1[key] == data2[key]:
-            diff_lines.append(f"    {key}: {_format_value(data1[key])}")
+            diff_lines.append(f'    {key}: {_format_value(data1[key])}')
         else:
-            diff_lines.append(f"  - {key}: {_format_value(data1[key])}")
-            diff_lines.append(f"  + {key}: {_format_value(data2[key])}")
+            diff_lines.append(f'  - {key}: {_format_value(data1[key])}')
+            diff_lines.append(f'  + {key}: {_format_value(data2[key])}')
 
-    return "{\n" + "\n".join(diff_lines) + "\n}"
+    return '{\n' + '\n'.join(diff_lines) + '\n}'
