@@ -1,6 +1,15 @@
 """Модуль содержит точку входа gendiff."""
 
 import argparse
+import json
+import logging
+import pathlib
+
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(message)s',
+    level=logging.INFO,
+)
+logger = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -17,7 +26,14 @@ def main() -> None:
         help='set format of output',
     )
 
-    parser.parse_args()
+    args = parser.parse_args()
+    with pathlib.Path(args.first_file).open(encoding='utf-8') as f1:
+        first_file_data = json.load(f1)
+        logger.info('first file: %s', first_file_data)
+
+    with pathlib.Path(args.second_file).open(encoding='utf-8') as f2:
+        second_file_data = json.load(f2)
+        logger.info('second file: %s', second_file_data)
 
 
 if __name__ == '__main__':
