@@ -12,6 +12,39 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def generator_diff(first_file_path: str, second_file_path: str) -> None:
+    """Сравнивает два файла и возвращает их различия."""
+    with pathlib.Path(first_file_path).open(encoding='utf-8') as f1:
+        first_file_data = json.load(f1)
+
+    with pathlib.Path(second_file_path).open(encoding='utf-8') as f2:
+        second_file_data = json.load(f2)
+
+    all_rows = set(first_file_data) | set(second_file_data)
+    result = ''
+    for row_key in sorted(all_rows):
+        is_in_first = row_key in first_file_data
+        is_in_second = row_key in second_file_data
+        is_in_both = is_in_first and is_in_second
+
+        # Если есть в обоих файлах - выяснить, одинаковые ли значения
+        if is_in_both:
+            if first_file_data[row_key] == second_file_data[row_key]:
+                result += f'  {row_key}: {first_file_data[row_key]}\n'
+            else:
+                # Строка из первого файла выводится первой
+                result += f'- {row_key}: {first_file_data[row_key]}\n'
+                result += f'+ {row_key}: {second_file_data[row_key]}\n'
+        # Если только в первом
+        elif is_in_first:
+            result += f'- {row_key}: {first_file_data[row_key]}\n'
+        else:
+            result += f'+ {row_key}: {second_file_data[row_key]}\n'
+
+    formatted_result = '\n{\n' + result + '\n}'
+    logger.info(formatted_result)
+
+
 def main() -> None:
     """Точка входа утилиты gendiff."""
     parser = argparse.ArgumentParser(
@@ -27,13 +60,7 @@ def main() -> None:
     )
 
     args = parser.parse_args()
-    with pathlib.Path(args.first_file).open(encoding='utf-8') as f1:
-        first_file_data = json.load(f1)
-        logger.info('first file: %s', first_file_data)
-
-    with pathlib.Path(args.second_file).open(encoding='utf-8') as f2:
-        second_file_data = json.load(f2)
-        logger.info('second file: %s', second_file_data)
+    generator_diff(args.first_file, args.second_file)
 
 
 if __name__ == '__main__':
